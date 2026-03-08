@@ -1,0 +1,691 @@
+<FEN NAM="OAOE" EXTDAT="07/03/2026" EXTTIM="08:02:53" EXTDOS="AGQ" LIB="Modelos import./export.">
+<SCRN NAM="AOE0" LIB="Modelos import./export.">
+<FRM LIB="" TYP="2" LIBTYP="Lista">
+<FLD NAM="EXT" LIB="Modelo" ATT="INPUT" VAL="INV"/>
+<FLD NAM="INTIT" LIB="Descripción" ATT="INPUT" VAL="Inventarios"/>
+<FLD NAM="ENAFLG" LIB="Activo" MEN="1" ATT="INPUT" VAL="2" LIBVAL="Sí"/>
+<FLD NAM="AFACTORYOWN" LIB="Propietario" ATT="INPUT" VAL=""/>
+</FRM>
+</SCRN>
+<SCRN NAM="AOE1" LIB="Modelos import./export.">
+<FRM LIB="General" TYP="2" LIBTYP="Lista">
+<FLD NAM="OBJ" LIB="Objeto" ATT="INPUT" VAL="SNX"/>
+<FLD NAM="FONCTION" LIB="Función" ATT="INPUT" VAL="GESSNX"/>
+<FLD NAM="MODULE" LIB="Módulo" MEN="14" ATT="INPUT" VAL="7" LIBVAL="Stocks"/>
+<FLD NAM="CODACT" LIB="Código actividad" ATT="INPUT" VAL=""/>
+<FLD NAM="ZCODACT" VAL=""/>
+<FLD NAM="ACS" LIB="Cód. de acceso" ATT="INPUT" VAL=""/>
+<FLD NAM="ZACS" VAL=""/>
+<FLD NAM="TRTIMP" LIB="Script estándar" ATT="INPUT" VAL="IMPSNXS"/>
+<FLD NAM="SPEIMP" LIB="Script específico" ATT="INPUT" VAL=""/>
+</FRM>
+<FRM LIB="Export." TYP="2" LIBTYP="Lista">
+<FLD NAM="EXPORT" LIB="Export." MEN="1" ATT="INPUT" VAL="2" LIBVAL="Sí"/>
+<FLD NAM="CHRNUM" LIB="Contador export." ATT="DISPLAY" VAL="0"/>
+</FRM>
+<FRM LIB="Estructura" TYP="2" LIBTYP="Lista">
+<FLD NAM="TYPFIL" LIB="Tipo de fichero" MEN="94" ATT="INPUT" VAL="3" LIBVAL="Delimitado"/>
+<FLD NAM="SEPFLD" LIB="Separador de campo" ATT="INPUT" VAL=","/>
+<FLD NAM="SEPREC" LIB="Separador registro" ATT="INPUT" VAL="\013\010"/>
+<FLD NAM="FLDLIM" LIB="Delimitador de campo" ATT="INPUT" VAL="&quot;"/>
+<FLD NAM="CODDBA" LIB="Formato fichero" MEN="945" ATT="INPUT" VAL="1" LIBVAL="ASCII"/>
+</FRM>
+<FRM LIB="Transcodificación" TYP="2" LIBTYP="Lista">
+<FLD NAM="OPTCHA" LIB="Juego de caracteres" MEN="9" ATT="INPUT" VAL="1" LIBVAL="ISO 8859"/>
+<FLD NAM="SEPDEC" LIB="Separador decimal" ATT="INPUT" VAL="."/>
+<FLD NAM="OPTDAT" LIB="Formato de fechas" ATT="INPUT" VAL="1"/>
+<FLD NAM="LIBDAT" LIB="" ATT="DISPLAY" VAL=" DDMMAA"/>
+<FLD NAM="OPTMNL" LIB="Formato menús locales" ATT="INPUT" VAL="0"/>
+<FLD NAM="LIBMNL" LIB="" ATT="DISPLAY" VAL=" Valor"/>
+</FRM>
+<FRM LIB="Import." TYP="2" LIBTYP="Lista">
+<FLD NAM="IMPORT" LIB="Import." MEN="1" ATT="INPUT" VAL="2" LIBVAL="Sí"/>
+<FLD NAM="OPTUPD" LIB="Actualización autorizada" MEN="1" ATT="INPUT" VAL="2" LIBVAL="Sí"/>
+<FLD NAM="AOWSTA" LIB="Sas" MEN="1" ATT="INPUT" VAL="1" LIBVAL="No"/>
+<FLD NAM="OPTSPE" LIB="Importación especial" MEN="1" ATT="INPUT" VAL="2" LIBVAL="Sí"/>
+<FLD NAM="ENAWRK" LIB="Workflow" MEN="1" ATT="INPUT" VAL="2" LIBVAL="Sí"/>
+<FLD NAM="STOPPROC" LIB="Detener importación al primer error" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+</FRM>
+<FRM LIB="Identificadores" TYP="1" LIBTYP="Tabla" NBLIG="3">
+<LIG NUM="1">
+<FLD NAM="NUMFLG" LIB="N.º" ATT="DISPLAY" VAL="1"/>
+<FLD NAM="FLGLEV" LIB="Nivel" ATT="INPUT" VAL="1"/>
+<FLD NAM="FLGREC" LIB="Indicador" ATT="INPUT" VAL="E"/>
+<FLD NAM="FLGFIL" LIB="Tabla" ATT="INPUT" VAL="CUNSESSION"/>
+<FLD NAM="FLGKEY" LIB="Clave" ATT="INPUT" VAL="CUN0"/>
+<FLD NAM="FLGLNK" LIB="Vínc." ATT="INPUT" VAL=""/>
+<FLD NAM="ANODLNK" LIB="" ATT="INPUT" VAL=""/>
+<FLD NAM="RECLEN" LIB="Longitud" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="2">
+<FLD NAM="NUMFLG" LIB="N.º" ATT="DISPLAY" VAL="2"/>
+<FLD NAM="FLGLEV" LIB="Nivel" ATT="INPUT" VAL="2"/>
+<FLD NAM="FLGREC" LIB="Indicador" ATT="INPUT" VAL="L"/>
+<FLD NAM="FLGFIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISTE"/>
+<FLD NAM="FLGKEY" LIB="Clave" ATT="INPUT" VAL="CUL0"/>
+<FLD NAM="FLGLNK" LIB="Vínc." ATT="INPUT" VAL="CUNSSSNUM"/>
+<FLD NAM="ANODLNK" LIB="" ATT="INPUT" VAL=""/>
+<FLD NAM="RECLEN" LIB="Longitud" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="3">
+<FLD NAM="NUMFLG" LIB="N.º" ATT="DISPLAY" VAL="3"/>
+<FLD NAM="FLGLEV" LIB="Nivel" ATT="INPUT" VAL="2"/>
+<FLD NAM="FLGREC" LIB="Indicador" ATT="INPUT" VAL="S"/>
+<FLD NAM="FLGFIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISDET"/>
+<FLD NAM="FLGKEY" LIB="Clave" ATT="INPUT" VAL="CUD0"/>
+<FLD NAM="FLGLNK" LIB="Vínc." ATT="INPUT" VAL="CUNSSSNUM"/>
+<FLD NAM="ANODLNK" LIB="" ATT="INPUT" VAL=""/>
+<FLD NAM="RECLEN" LIB="Longitud" ATT="INPUT" VAL="0"/>
+</LIG>
+</FRM>
+</SCRN>
+<SCRN NAM="AOE2" LIB="Modelos import./export.">
+<FRM LIB="Campos" TYP="1" LIBTYP="Tabla" NBLIG="40">
+<LIG NUM="1">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="1"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="E"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNSESSION"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="/"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL=""/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="2">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="2"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="E"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNSESSION"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="CUNSSSNUM"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Sesión inventario"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="3">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="3"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="E"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNSESSION"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="CUNSSSDES"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Descripción"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="4">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="4"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="E"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNSESSION"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="CUNSSSTYP"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Tipo inventario"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="5">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="5"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="E"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNSESSION"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="CUNSSSMOD"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Selección proceso"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="6">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="6"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="E"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNSESSION"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="CUNNULSTK"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Artículos sin stock"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="7">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="7"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="E"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNSESSION"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="CUNSRTCOD"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Orden inventario"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="8">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="8"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="E"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNSESSION"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="CUNLASFLG"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Global"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="9">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="9"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="E"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNSESSION"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="MAXLIG"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Máximo líneas"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="10">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="10"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="E"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNSESSION"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="PRCLIG"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="% límite"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="11">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="11"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="E"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNSESSION"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="ITMREFSTR"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Artículo inicio"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="12">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="12"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="E"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNSESSION"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="ITMREFEND"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Artículo fin"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="13">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="13"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="E"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNSESSION"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="LOCSTR"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Ubicación inicio"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="14">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="14"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="E"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNSESSION"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="LOCEND"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Ubicación fin"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="15">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="15"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="E"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNSESSION"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="STOFCY"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Planta almcto."/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="16">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="16"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="L"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISTE"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="/"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL=""/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="17">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="17"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="L"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISTE"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="CUNSSSNUM"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Sesión inventario"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="18">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="18"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="L"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISTE"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="CUNLISNUM"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Lista inventario"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="19">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="19"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="L"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISTE"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="CUNLISSTA"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Estado"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="20">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="20"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="L"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISTE"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="STOFCY"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Planta almcto."/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="21">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="21"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="S"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISDET"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="/"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL=""/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="22">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="22"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="S"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISDET"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="CUNSSSNUM"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Sesión inventario"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="23">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="23"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="S"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISDET"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="CUNLISNUM"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Lista inventario"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="24">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="24"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="S"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISDET"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="ITMLISNUM"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Rango artículo"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="25">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="25"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="S"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISDET"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="STOFCY"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Planta almcto."/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="26">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="26"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="S"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISDET"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="QTYPCUNEW"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Stock UE contado"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="27">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="27"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="S"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISDET"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="QTYSTUNEW"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Stock US contado"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="28">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="28"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="S"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISDET"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="ZERSTOFLG"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Stock nulo"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="29">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="29"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="S"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISDET"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="ITMREF"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Artículo"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="30">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="30"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="S"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISDET"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="LOT"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Lote"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="31">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="31"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="S"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISDET"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="SLO"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Sublote"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="32">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="32"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="S"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISDET"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="LPNNUM"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Número contenedor"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="33">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="33"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="S"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISDET"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="LOC"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Ubicación"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="34">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="34"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="S"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISDET"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="STA"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Estado stock"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="35">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="35"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="S"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISDET"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="PCU"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Unidad"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="36">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="36"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="S"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISDET"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="PCUSTUCOE"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Coef. UE-US"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="37">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="37"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="S"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISDET"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="SERNUM"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Serie"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="38">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="38"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="S"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISDET"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="PALNUM"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Identificador 1"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="39">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="39"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="S"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISDET"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="CTRNUM"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Identificador 2"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+<LIG NUM="40">
+<FLD NAM="NUMLIG" LIB="N.º" ATT="DISPLAY" VAL="40"/>
+<FLD NAM="TYP" LIB="Indicador" ATT="INPUT" VAL="S"/>
+<FLD NAM="FIL" LIB="Tabla" ATT="INPUT" VAL="CUNLISDET"/>
+<FLD NAM="FLD" LIB="Campo" ATT="INPUT" VAL="QLYCTLDEM"/>
+<FLD NAM="COM" LIB="Descripción" ATT="INPUT" VAL="Solicitud análisis"/>
+<FLD NAM="SEL" LIB="Límite" MEN="890" ATT="INPUT" VAL="1" LIBVAL="No entrada"/>
+<FLD NAM="LOC" LIB="Posición" ATT="INPUT" VAL="0"/>
+<FLD NAM="LNG" LIB="Longitud" ATT="INPUT" VAL="0"/>
+<FLD NAM="FMT" LIB="Formato" ATT="INPUT" VAL=""/>
+<FLD NAM="PATTERN" LIB="Modelo" ATT="INPUT" VAL=""/>
+<FLD NAM="BAL" LIB="Etiqueta" ATT="INPUT" VAL=""/>
+<FLD NAM="OBL" LIB="Obligatorio" MEN="1" ATT="INPUT" VAL="0" LIBVAL=""/>
+<FLD NAM="NUMTAB" LIB="Número tabla" ATT="INPUT" VAL="0"/>
+</LIG>
+</FRM>
+<FRM LIB="Generación de fichero" TYP="2" LIBTYP="Lista">
+<FLD NAM="TYPEXP" LIB="" MEN="921" ATT="INPUT" VAL="1" LIBVAL="Cliente"/>
+<FLD NAM="FILEXT" LIB="Fichero de datos" ATT="INPUT" VAL=""/>
+<FLD NAM="REPFIN" LIB="Directorio final" ATT="INPUT" VAL=""/>
+</FRM>
+</SCRN>
+</FEN>
