@@ -7,6 +7,8 @@ import { detectDelimiter, parseCsv } from './csv.js';
 
 // Estado principal de la sesión en curso.
 let currentSession = null;
+// Cantidad que se aplicará a la siguiente lectura por escáner.
+let nextScanQuantity = 1;
 
 const els = {
   tabs: [...document.querySelectorAll('.tab-btn')],
@@ -22,7 +24,11 @@ const els = {
   statusLocationRequired: document.getElementById('statusLocationRequired'),
   statusActiveLocation: document.getElementById('statusActiveLocation'),
   scanInput: document.getElementById('scanInput'),
-  scanQty: document.getElementById('scanQty'),
+  btnScanQty: document.getElementById('btnScanQty'),
+  qtyDialog: document.getElementById('qtyDialog'),
+  qtyForm: document.getElementById('qtyForm'),
+  qtyInput: document.getElementById('qtyInput'),
+  btnQtyCancel: document.getElementById('btnQtyCancel'),
   btnProcessScan: document.getElementById('btnProcessScan'),
   btnOpenManual: document.getElementById('btnOpenManual'),
   manualDialog: document.getElementById('manualDialog'),
@@ -50,6 +56,15 @@ function showToast(message, isError = false) {
 function switchTab(tabName) {
   els.tabs.forEach((b) => b.classList.toggle('active', b.dataset.tab === tabName));
   els.tabPanels.forEach((p) => p.classList.toggle('active', p.id === `tab-${tabName}`));
+}
+
+
+
+/**
+ * Refresca el texto del botón de cantidad para la siguiente lectura.
+ */
+function updateScanQtyButton() {
+  els.btnScanQty.textContent = `Cantidad: ${nextScanQuantity}`;
 }
 
 function readFileText(file) {
@@ -237,6 +252,30 @@ async function processItem({ reference, lot, sublot, quantity, tipoLectura, rawC
 
 els.tabs.forEach((btn) => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
 
+els.btnScanQty.addEventListener('click', () => {
+  els.qtyInput.value = String(nextScanQuantity);
+  els.qtyDialog.showModal();
+  els.qtyInput.focus();
+});
+
+els.btnQtyCancel.addEventListener('click', () => {
+  els.qtyDialog.close();
+  els.scanInput.focus();
+});
+
+els.qtyForm.addEventListener('submit', (ev) => {
+  ev.preventDefault();
+  const qty = Number(els.qtyInput.value);
+  if (!Number.isFinite(qty) || qty <= 0) {
+    showToast('La cantidad debe ser mayor que cero.', true);
+    return;
+  }
+  nextScanQuantity = qty;
+  updateScanQtyButton();
+  els.qtyDialog.close();
+  els.scanInput.focus();
+});
+
 els.btnImport.addEventListener('click', async () => {
   try {
     const inventory = els.inventoryFile.files?.[0];
@@ -310,7 +349,7 @@ els.btnProcessScan.addEventListener('click', async () => {
   try {
     requireSessionLoaded();
     const raw = els.scanInput.value.trim();
-    const qty = Number(els.scanQty.value || 1);
+    const qty = Number(nextScanQuantity || 1);
     if (!raw) throw new Error('Lectura vacía.');
 
     const detected = classifyScan(raw);
@@ -332,7 +371,12 @@ els.btnProcessScan.addEventListener('click', async () => {
     }
 
     els.scanInput.value = '';
-    els.scanQty.value = '1';
+
+    // Si la lectura registrada es un artículo, la cantidad vuelve automáticamente a 1.
+    if (detected.kind === 'article') {
+      nextScanQuantity = 1;
+      updateScanQtyButton();
+    }
   } catch (err) {
     showToast(err.message, true);
   }
@@ -411,9 +455,10 @@ els.btnExportCsv.addEventListener('click', () => {
 
 // Mantiene foco operativo para lector USB que actúa como teclado.
 setInterval(() => {
-  if (!els.manualDialog.open && document.activeElement !== els.scanInput) {
+  if (!els.manualDialog.open && !els.qtyDialog.open && document.activeElement !== els.scanInput) {
     els.scanInput.focus({ preventScroll: true });
   }
 }, 900);
 
+updateScanQtyButton();
 refreshSavedSessions().then(() => updateSummaryUI());

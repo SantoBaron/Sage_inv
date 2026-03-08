@@ -61,7 +61,7 @@
           <h3>Captura unificada (lector USB)</h3>
           <div class="row">
             <input id="scanInput" type="text" placeholder="Escanea ubicación o artículo" />
-            <input id="scanQty" type="number" min="1" step="1" value="1" />
+            <button id="btnScanQty" class="btn-secondary" type="button">Cantidad: 1</button>
             <button id="btnProcessScan">Procesar lectura</button>
           </div>
           <small>
@@ -102,6 +102,20 @@
         </div>
       </section>
     </main>
+
+
+
+    <dialog id="qtyDialog">
+      <form method="dialog" id="qtyForm" class="manual-form">
+        <h3>Configurar cantidad para siguiente lectura</h3>
+        <p>Introduzca la cantidad y pulse aceptar. Tras registrar un artículo, volverá automáticamente a 1.</p>
+        <input id="qtyInput" type="number" min="1" step="1" value="1" required />
+        <menu>
+          <button id="btnQtyCancel" value="cancel" class="btn-secondary" type="button">Cancelar</button>
+          <button id="btnQtyAccept" value="default" type="submit">Aceptar cantidad</button>
+        </menu>
+      </form>
+    </dialog>
 
     <dialog id="manualDialog">
       <form method="dialog" id="manualForm" class="manual-form">
