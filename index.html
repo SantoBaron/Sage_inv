@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventario Sage X3</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>Inventario Sage X3 (Web estática)</h1>
+      <p>Captura de conteo compatible con estructura E/L/S.</p>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="importacion">1) Importación</button>
+      <button class="tab-btn" data-tab="conteo">2) Conteo</button>
+      <button class="tab-btn" data-tab="exportacion">3) Exportación</button>
+    </nav>
+
+    <main>
+      <section id="tab-importacion" class="tab-panel active">
+        <h2>Importación de sesión</h2>
+        <div class="card">
+          <label for="inventoryFile">CSV de sesión Sage (modeloSesInv.csv)</label>
+          <input id="inventoryFile" type="file" accept=".csv,text/csv" />
+
+          <label for="mapFile">MAPA.csv (obligatorio si hay ubicación)</label>
+          <input id="mapFile" type="file" accept=".csv,text/csv" />
+
+          <div class="row">
+            <button id="btnImport">Importar nueva sesión</button>
+            <button id="btnRefreshSessions" class="btn-secondary">Actualizar sesiones guardadas</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Continuar sesión local</h3>
+          <select id="savedSessions"></select>
+          <button id="btnLoadSession" class="btn-secondary">Cargar sesión seleccionada</button>
+        </div>
+
+        <div class="card">
+          <h3>Resumen de sesión actual</h3>
+          <pre id="importSummary">Sin sesión cargada.</pre>
+        </div>
+      </section>
+
+      <section id="tab-conteo" class="tab-panel">
+        <h2>Conteo operativo</h2>
+
+        <div class="card">
+          <div class="status-grid">
+            <div><strong>SessionId local:</strong> <span id="statusSession">-</span></div>
+            <div><strong>Ubicación requerida:</strong> <span id="statusLocationRequired">-</span></div>
+            <div><strong>Ubicación activa:</strong> <span id="statusActiveLocation">-</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Captura unificada (lector USB)</h3>
+          <div class="row">
+            <input id="scanInput" type="text" placeholder="Escanea ubicación o artículo" />
+            <input id="scanQty" type="number" min="1" step="1" value="1" />
+            <button id="btnProcessScan">Procesar lectura</button>
+          </div>
+          <small>
+            Un solo foco: si detecta ubicación (A0101, B0203...) cambia ubicación activa automáticamente;
+            si detecta artículo, aplica reglas de negocio.
+          </small>
+          <div class="row mt8">
+            <button id="btnOpenManual" class="btn-secondary">Entrada manual (popup)</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Últimas lecturas (log)</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Tipo</th>
+                <th>Ubicación</th>
+                <th>Referencia</th>
+                <th>Lote</th>
+                <th>Sublote</th>
+                <th>Cantidad</th>
+                <th>Raw</th>
+                <th>Resultado</th>
+              </tr>
+            </thead>
+            <tbody id="logTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="tab-exportacion" class="tab-panel">
+        <h2>Exportación final</h2>
+        <div class="card">
+          <pre id="exportSummary">Sin sesión cargada.</pre>
+          <button id="btnExportCsv">Descargar CSV para Sage X3</button>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="manualDialog">
+      <form method="dialog" id="manualForm" class="manual-form">
+        <h3>Entrada manual</h3>
+        <p>Use esta ventana para introducir un artículo manualmente sin perder el foco principal de lectura.</p>
+        <input id="manualRef" type="text" placeholder="Referencia (obligatoria)" required />
+        <input id="manualLot" type="text" placeholder="Lote (opcional)" />
+        <input id="manualSublot" type="text" placeholder="Sublote (opcional)" />
+        <input id="manualQty" type="number" min="1" step="1" value="1" required />
+        <menu>
+          <button id="btnManualCancel" value="cancel" class="btn-secondary" type="button">Cancelar</button>
+          <button id="btnProcessManual" value="default" type="submit">Guardar manual</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <div id="toast"></div>
+
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
