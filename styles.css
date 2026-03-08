@@ -185,3 +185,12 @@ dialog::backdrop {
 #toast.error {
   background: var(--danger);
 }
+
+.hidden {
+  display: none;
+}
+
+.row h3 {
+  margin: 0;
+  flex: 1;
+}

@@ -74,7 +74,11 @@
         </div>
 
         <div class="card">
-          <h3>Últimas lecturas (log)</h3>
+          <div class="row">
+            <h3>Últimas lecturas (log)</h3>
+            <button id="btnToggleLog" class="btn-secondary" type="button">Mostrar log</button>
+          </div>
+          <div id="logContainer" class="hidden">
           <table>
             <thead>
               <tr>
@@ -91,6 +95,7 @@
             </thead>
             <tbody id="logTableBody"></tbody>
           </table>
+          </div>
         </div>
       </section>
 

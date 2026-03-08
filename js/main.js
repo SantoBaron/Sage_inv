@@ -9,6 +9,8 @@ import { detectDelimiter, parseCsv } from './csv.js';
 let currentSession = null;
 // Cantidad que se aplicará a la siguiente lectura por escáner.
 let nextScanQuantity = 1;
+// Permite mostrar/ocultar el log de lecturas bajo demanda del operario.
+let isLogVisible = false;
 
 const els = {
   tabs: [...document.querySelectorAll('.tab-btn')],
@@ -38,6 +40,8 @@ const els = {
   manualLot: document.getElementById('manualLot'),
   manualSublot: document.getElementById('manualSublot'),
   manualQty: document.getElementById('manualQty'),
+  btnToggleLog: document.getElementById('btnToggleLog'),
+  logContainer: document.getElementById('logContainer'),
   logTableBody: document.getElementById('logTableBody'),
   exportSummary: document.getElementById('exportSummary'),
   btnExportCsv: document.getElementById('btnExportCsv'),
@@ -65,6 +69,15 @@ function switchTab(tabName) {
  */
 function updateScanQtyButton() {
   els.btnScanQty.textContent = `Cantidad: ${nextScanQuantity}`;
+}
+
+
+/**
+ * Actualiza visibilidad del panel de log para reducir ruido visual en conteo.
+ */
+function updateLogVisibilityUI() {
+  els.logContainer.classList.toggle('hidden', !isLogVisible);
+  els.btnToggleLog.textContent = isLogVisible ? 'Ocultar log' : 'Mostrar log';
 }
 
 function readFileText(file) {
@@ -261,6 +274,11 @@ els.btnScanQty.addEventListener('click', () => {
 els.btnQtyCancel.addEventListener('click', () => {
   els.qtyDialog.close();
   els.scanInput.focus();
+});
+
+els.btnToggleLog.addEventListener('click', () => {
+  isLogVisible = !isLogVisible;
+  updateLogVisibilityUI();
 });
 
 els.qtyForm.addEventListener('submit', (ev) => {
@@ -461,4 +479,5 @@ setInterval(() => {
 }, 900);
 
 updateScanQtyButton();
+updateLogVisibilityUI();
 refreshSavedSessions().then(() => updateSummaryUI());
