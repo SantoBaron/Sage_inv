@@ -1,5 +1,5 @@
 import { parseSageSession, normalizeNullable } from './sageParser.js';
-import { parseScannedArticle } from './scannerParser.js';
+import { classifyScan } from './scannerParser.js';
 import { applyReadingToWorkingTable, calculateStats } from './inventoryEngine.js';
 import { downloadWorkingCsv } from './exporter.js';
 import { getSession, listSessions, saveSession } from './storage.js';
@@ -21,16 +21,17 @@ const els = {
   statusSession: document.getElementById('statusSession'),
   statusLocationRequired: document.getElementById('statusLocationRequired'),
   statusActiveLocation: document.getElementById('statusActiveLocation'),
-  locationInput: document.getElementById('locationInput'),
-  btnSetLocation: document.getElementById('btnSetLocation'),
   scanInput: document.getElementById('scanInput'),
   scanQty: document.getElementById('scanQty'),
   btnProcessScan: document.getElementById('btnProcessScan'),
+  btnOpenManual: document.getElementById('btnOpenManual'),
+  manualDialog: document.getElementById('manualDialog'),
+  manualForm: document.getElementById('manualForm'),
+  btnManualCancel: document.getElementById('btnManualCancel'),
   manualRef: document.getElementById('manualRef'),
   manualLot: document.getElementById('manualLot'),
   manualSublot: document.getElementById('manualSublot'),
   manualQty: document.getElementById('manualQty'),
-  btnProcessManual: document.getElementById('btnProcessManual'),
   logTableBody: document.getElementById('logTableBody'),
   exportSummary: document.getElementById('exportSummary'),
   btnExportCsv: document.getElementById('btnExportCsv'),
@@ -146,6 +147,9 @@ function requireSessionLoaded() {
   if (!currentSession) throw new Error('Debe cargar/importar una sesión primero.');
 }
 
+/**
+ * Valida ubicación activa únicamente cuando el inventario trabaja por ubicación.
+ */
 function validateActiveLocation() {
   requireSessionLoaded();
   if (!currentSession.sourceMeta.requiresLocation) return;
@@ -155,6 +159,36 @@ function validateActiveLocation() {
   if (!currentSession.validLocations.includes(loc.toUpperCase())) {
     throw new Error('La ubicación activa no existe en MAPA.csv.');
   }
+}
+
+/**
+ * Aplica cambio de ubicación activa desde una lectura detectada automáticamente.
+ */
+async function processLocationScan(locationCode) {
+  requireSessionLoaded();
+  const loc = normalizeNullable(locationCode)?.toUpperCase();
+  if (!loc) throw new Error('Ubicación vacía.');
+
+  if (currentSession.sourceMeta.requiresLocation && !currentSession.validLocations.includes(loc)) {
+    throw new Error(`Ubicación inválida según MAPA: ${loc}`);
+  }
+
+  currentSession.activeLocation = loc;
+  currentSession.logRows.push({
+    timestamp: new Date().toISOString(),
+    sessionId: currentSession.id,
+    tipoLectura: 'UBI',
+    ubicacion: loc,
+    referencia: null,
+    lote: null,
+    sublote: null,
+    cantidad: 0,
+    rawCode: loc,
+    resultado: 'location_changed',
+  });
+
+  await persistAndRefresh();
+  showToast(`Ubicación activa: ${loc}`);
 }
 
 async function persistAndRefresh() {
@@ -267,65 +301,35 @@ els.btnLoadSession.addEventListener('click', async () => {
   }
 });
 
-els.btnSetLocation.addEventListener('click', async () => {
-  try {
-    requireSessionLoaded();
-    const loc = normalizeNullable(els.locationInput.value)?.toUpperCase();
-    if (!loc) throw new Error('Ubicación vacía.');
-
-    if (currentSession.sourceMeta.requiresLocation && !currentSession.validLocations.includes(loc)) {
-      throw new Error(`Ubicación inválida según MAPA: ${loc}`);
-    }
-
-    currentSession.activeLocation = loc;
-    els.locationInput.value = '';
-    await persistAndRefresh();
-    showToast(`Ubicación activa: ${loc}`);
-  } catch (err) {
-    showToast(err.message, true);
-  }
-});
-
-els.scanInput.addEventListener('input', () => {
-  // Si el lector no manda Enter, la marca Ê21 dispara el procesamiento.
-  if (els.scanInput.value.includes('Ê21')) {
-    els.btnProcessScan.click();
-  }
-});
-
+/**
+ * Procesa lectura unificada del input principal:
+ * - Ubicación: cambia ubicación activa.
+ * - Artículo: actualiza/crea línea de inventario.
+ */
 els.btnProcessScan.addEventListener('click', async () => {
   try {
+    requireSessionLoaded();
     const raw = els.scanInput.value.trim();
     const qty = Number(els.scanQty.value || 1);
     if (!raw) throw new Error('Lectura vacía.');
 
-    let parsed = parseScannedArticle(raw);
+    const detected = classifyScan(raw);
 
-    // Fallback operativo: si no hay tokens del formato, se trata como referencia directa.
-    if (!parsed.isValid && !raw.includes('Ê02')) {
-      parsed = {
-        rawCode: raw,
-        reference: raw,
-        lot: null,
-        sublot: null,
-        hasEndMarker: false,
-        isValid: true,
-        errors: [],
-        warnings: ['Lectura sin tokens Êxx: usada como referencia directa.'],
-      };
+    if (detected.kind === 'location') {
+      await processLocationScan(detected.location);
+    } else if (detected.kind === 'article') {
+      const tipoLectura = qty === 1 ? 'L' : 'LC';
+      await processItem({
+        reference: detected.reference,
+        lot: detected.lot,
+        sublot: detected.sublot,
+        quantity: qty,
+        tipoLectura,
+        rawCode: detected.rawCode,
+      });
+    } else {
+      throw new Error(detected.errors.join(' | ') || 'Lectura inválida.');
     }
-
-    if (!parsed.isValid) throw new Error(parsed.errors.join(' | '));
-
-    const tipoLectura = qty === 1 ? 'L' : 'LC';
-    await processItem({
-      reference: parsed.reference,
-      lot: parsed.lot,
-      sublot: parsed.sublot,
-      quantity: qty,
-      tipoLectura,
-      rawCode: parsed.rawCode,
-    });
 
     els.scanInput.value = '';
     els.scanQty.value = '1';
@@ -334,7 +338,31 @@ els.btnProcessScan.addEventListener('click', async () => {
   }
 });
 
-els.btnProcessManual.addEventListener('click', async () => {
+els.scanInput.addEventListener('input', () => {
+  // Si hay marca de fin de artículo o patrón completo de ubicación, procesa automáticamente.
+  const raw = els.scanInput.value.trim();
+  if (raw.includes('Ê21') || /^[A-Za-z]\d{4}$/.test(raw)) {
+    els.btnProcessScan.click();
+  }
+});
+
+els.btnOpenManual.addEventListener('click', () => {
+  try {
+    requireSessionLoaded();
+    els.manualDialog.showModal();
+    els.manualRef.focus();
+  } catch (err) {
+    showToast(err.message, true);
+  }
+});
+
+els.btnManualCancel.addEventListener('click', () => {
+  els.manualDialog.close();
+  els.scanInput.focus();
+});
+
+els.manualForm.addEventListener('submit', async (ev) => {
+  ev.preventDefault();
   try {
     const qty = Number(els.manualQty.value || 1);
     const tipoLectura = qty === 1 ? 'M' : 'MC';
@@ -352,6 +380,9 @@ els.btnProcessManual.addEventListener('click', async () => {
     els.manualLot.value = '';
     els.manualSublot.value = '';
     els.manualQty.value = '1';
+
+    els.manualDialog.close();
+    els.scanInput.focus();
   } catch (err) {
     showToast(err.message, true);
   }
@@ -370,7 +401,7 @@ els.btnExportCsv.addEventListener('click', () => {
 
 // Mantiene foco operativo para lector USB que actúa como teclado.
 setInterval(() => {
-  if (document.activeElement !== els.scanInput) {
+  if (!els.manualDialog.open && document.activeElement !== els.scanInput) {
     els.scanInput.focus({ preventScroll: true });
   }
 }, 900);

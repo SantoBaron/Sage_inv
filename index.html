@@ -58,32 +58,18 @@
         </div>
 
         <div class="card">
-          <h3>Cambiar ubicación activa</h3>
+          <h3>Captura unificada (lector USB)</h3>
           <div class="row">
-            <input id="locationInput" type="text" placeholder="Escanea o escribe ubicación" />
-            <button id="btnSetLocation">Establecer ubicación</button>
-          </div>
-          <small>Si el inventario usa ubicación, solo se aceptan ubicaciones presentes en MAPA.csv.</small>
-        </div>
-
-        <div class="card">
-          <h3>Captura de artículo (lector USB)</h3>
-          <div class="row">
-            <input id="scanInput" type="text" placeholder="Campo siempre en foco para lectura" />
+            <input id="scanInput" type="text" placeholder="Escanea ubicación o artículo" />
             <input id="scanQty" type="number" min="1" step="1" value="1" />
             <button id="btnProcessScan">Procesar lectura</button>
           </div>
-          <small>La lectura se procesa automáticamente si se detecta la marca de fin Ê21.</small>
-        </div>
-
-        <div class="card">
-          <h3>Entrada manual</h3>
-          <div class="manual-grid">
-            <input id="manualRef" type="text" placeholder="Referencia (obligatoria)" />
-            <input id="manualLot" type="text" placeholder="Lote (opcional)" />
-            <input id="manualSublot" type="text" placeholder="Sublote (opcional)" />
-            <input id="manualQty" type="number" min="1" step="1" value="1" />
-            <button id="btnProcessManual">Registrar manual</button>
+          <small>
+            Un solo foco: si detecta ubicación (A0101, B0203...) cambia ubicación activa automáticamente;
+            si detecta artículo, aplica reglas de negocio.
+          </small>
+          <div class="row mt8">
+            <button id="btnOpenManual" class="btn-secondary">Entrada manual (popup)</button>
           </div>
         </div>
 
@@ -116,6 +102,21 @@
         </div>
       </section>
     </main>
+
+    <dialog id="manualDialog">
+      <form method="dialog" id="manualForm" class="manual-form">
+        <h3>Entrada manual</h3>
+        <p>Use esta ventana para introducir un artículo manualmente sin perder el foco principal de lectura.</p>
+        <input id="manualRef" type="text" placeholder="Referencia (obligatoria)" required />
+        <input id="manualLot" type="text" placeholder="Lote (opcional)" />
+        <input id="manualSublot" type="text" placeholder="Sublote (opcional)" />
+        <input id="manualQty" type="number" min="1" step="1" value="1" required />
+        <menu>
+          <button id="btnManualCancel" value="cancel" class="btn-secondary" type="button">Cancelar</button>
+          <button id="btnProcessManual" value="default" type="submit">Guardar manual</button>
+        </menu>
+      </form>
+    </dialog>
 
     <div id="toast"></div>
 

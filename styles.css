@@ -3,7 +3,6 @@
   --card: #fff;
   --accent: #1e5fa8;
   --danger: #9f1a1a;
-  --muted: #64748b;
 }
 
 * {
@@ -75,6 +74,10 @@ main {
   flex-wrap: wrap;
 }
 
+.mt8 {
+  margin-top: 8px;
+}
+
 input,
 select,
 button {
@@ -95,12 +98,6 @@ button {
 }
 
 .status-grid {
-  display: grid;
-  gap: 0.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-}
-
-.manual-grid {
   display: grid;
   gap: 0.5rem;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -127,6 +124,31 @@ pre {
   background: #f8fafc;
   padding: 0.75rem;
   border-radius: 6px;
+}
+
+dialog {
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+  width: min(520px, calc(100vw - 2rem));
+}
+
+dialog::backdrop {
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.manual-form {
+  padding: 1rem;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.manual-form menu {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
 }
 
 #toast {

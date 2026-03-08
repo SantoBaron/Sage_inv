@@ -5,6 +5,22 @@ import { normalizeNullable } from './sageParser.js';
 const TOKENS = ['Ê02', 'Ê10', 'Ê04', 'Ê21'];
 
 /**
+ * Detector de ubicaciones según patrón de almacén:
+ * - 1 letra (A-Z)
+ * - 2 dígitos de mueble
+ * - 2 dígitos de balda
+ * Ejemplos válidos: A0101, B0101, C0203
+ */
+export function detectLocationCode(rawCode) {
+  const raw = String(rawCode ?? '').trim().toUpperCase();
+  const match = /^[A-Z]\d{4}$/.test(raw);
+  return {
+    isLocation: match,
+    location: match ? raw : null,
+  };
+}
+
+/**
  * Obtiene texto entre dos tokens; permite detectar vacío cuando los tokens son consecutivos.
  */
 function extractBetween(raw, startToken, endToken) {
@@ -72,5 +88,55 @@ export function parseScannedArticle(rawCode) {
     isValid: errors.length === 0,
     errors,
     warnings,
+  };
+}
+
+/**
+ * Clasifica una lectura cruda en ubicación, artículo o inválida.
+ * Esto permite mantener un único foco de entrada y procesar automáticamente.
+ */
+export function classifyScan(rawCode) {
+  const raw = String(rawCode ?? '').trim();
+  const loc = detectLocationCode(raw);
+  if (loc.isLocation) {
+    return {
+      kind: 'location',
+      location: loc.location,
+      rawCode: raw,
+      isValid: true,
+      errors: [],
+      warnings: [],
+    };
+  }
+
+  const article = parseScannedArticle(raw);
+  if (article.isValid) {
+    return {
+      kind: 'article',
+      ...article,
+    };
+  }
+
+  // Fallback operativo: lectura sin tokens se interpreta como referencia directa de artículo.
+  if (!raw.includes('Ê02') && raw.length > 0) {
+    return {
+      kind: 'article',
+      rawCode: raw,
+      reference: raw,
+      lot: null,
+      sublot: null,
+      hasEndMarker: false,
+      isValid: true,
+      errors: [],
+      warnings: ['Lectura sin tokens Êxx: usada como referencia directa.'],
+    };
+  }
+
+  return {
+    kind: 'invalid',
+    rawCode: raw,
+    isValid: false,
+    errors: article.errors,
+    warnings: article.warnings,
   };
 }
