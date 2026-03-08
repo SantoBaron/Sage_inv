@@ -338,6 +338,16 @@ els.btnProcessScan.addEventListener('click', async () => {
   }
 });
 
+
+els.scanInput.addEventListener('keydown', (ev) => {
+  // Muchos lectores USB envían Enter al terminar: esto procesa tanto ubicaciones
+  // en texto plano como referencias de artículo sin requerir marcador Ê21.
+  if (ev.key === 'Enter') {
+    ev.preventDefault();
+    els.btnProcessScan.click();
+  }
+});
+
 els.scanInput.addEventListener('input', () => {
   // Si hay marca de fin de artículo o patrón completo de ubicación, procesa automáticamente.
   const raw = els.scanInput.value.trim();

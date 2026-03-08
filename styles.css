@@ -31,20 +31,39 @@ body {
   display: flex;
   gap: 0.5rem;
   padding: 1rem;
+  background: #ffffff;
+  border-bottom: 1px solid #dbe2ea;
+  position: sticky;
+  top: 0;
+  z-index: 3;
 }
 
 .tab-btn {
-  border: 1px solid #c7d2fe;
-  background: #e2e8f0;
-  padding: 0.55rem 0.8rem;
-  border-radius: 6px;
+  border: 1px solid #2563eb;
+  background: #ffffff;
+  color: #1e3a8a;
+  font-weight: 700;
+  padding: 0.6rem 0.9rem;
+  border-radius: 8px;
   cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.tab-btn:hover {
+  background: #eff6ff;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
+}
+
+.tab-btn:focus-visible {
+  outline: 3px solid #93c5fd;
+  outline-offset: 1px;
 }
 
 .tab-btn.active {
-  background: #dbeafe;
-  color: #1d4ed8;
-  border-color: #93c5fd;
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #1d4ed8;
+  box-shadow: 0 3px 8px rgba(37, 99, 235, 0.3);
 }
 
 main {
