@@ -1,5 +1,5 @@
 import { parseSageSession, normalizeNullable } from './sageParser.js';
-import { classifyScan } from './scannerParser.js';
+import { classifyScan, hasAnyEndMarker } from './scannerParser.js';
 import { applyReadingToWorkingTable, calculateStats } from './inventoryEngine.js';
 import { downloadWorkingCsv } from './exporter.js';
 import { getSession, listSessions, saveSession } from './storage.js';
@@ -349,9 +349,9 @@ els.scanInput.addEventListener('keydown', (ev) => {
 });
 
 els.scanInput.addEventListener('input', () => {
-  // Si hay marca de fin de artículo o patrón completo de ubicación, procesa automáticamente.
+  // Si hay marca de fin de artículo (21 con prefijo Ê/É/�) o patrón de ubicación, procesa automáticamente.
   const raw = els.scanInput.value.trim();
-  if (raw.includes('Ê21') || /^[A-Za-z]\d{4}$/.test(raw)) {
+  if (hasAnyEndMarker(raw) || /^[A-Za-z]\d{4}$/.test(raw)) {
     els.btnProcessScan.click();
   }
 });
