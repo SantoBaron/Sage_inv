@@ -59,7 +59,27 @@ export function detectDelimiter(text) {
 }
 
 /**
- * Serializa filas en CSV, entrecomillando todo para máxima compatibilidad.
+ * Determina si un valor puede exportarse como numérico sin comillas.
+ * Regla práctica para aproximar el formato Sage:
+ * - enteros/decimales sin ceros a la izquierda (excepto "0") -> sin comillas
+ * - resto (códigos, textos, vacíos) -> con comillas
+ */
+function shouldBeUnquotedNumber(value) {
+  const raw = String(value ?? '').trim();
+  if (!/^-?\d+(?:\.\d+)?$/.test(raw)) return false;
+
+  const unsigned = raw.startsWith('-') ? raw.slice(1) : raw;
+  const integerPart = unsigned.split('.')[0];
+
+  // Ej.: "00002" o "01" no se tratan como numéricos para no perder semántica de código.
+  if (integerPart.length > 1 && integerPart.startsWith('0')) return false;
+  return true;
+}
+
+/**
+ * Serializa filas CSV intentando respetar el patrón del modelo Sage:
+ * - numéricos funcionales sin comillas
+ * - textos/códigos/vacíos entre comillas
  * @param {string[][]} rows
  * @param {string} delimiter
  * @returns {string}
@@ -69,7 +89,11 @@ export function toCsv(rows, delimiter = ',') {
     .map((r) =>
       r
         .map((cell) => {
-          const safe = String(cell ?? '').replaceAll('"', '""');
+          const raw = String(cell ?? '');
+          if (raw === '') return '""';
+          if (shouldBeUnquotedNumber(raw)) return raw;
+
+          const safe = raw.replaceAll('"', '""');
           return `"${safe}"`;
         })
         .join(delimiter)
