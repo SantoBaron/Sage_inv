@@ -61,8 +61,9 @@ export function applyReadingToWorkingTable({
 
   // Se copia íntegramente la última línea S para preservar estructura técnica.
   const newRow = [...lastRow];
-  const currentLine = Number(lastRow[S_IDX.ITMLISNUM] || 0);
-  newRow[S_IDX.ITMLISNUM] = String(currentLine + 1000);
+  // Regla Sage: para altas nuevas en importación, ITMLISNUM debe ir a 0.
+  // Sage asignará automáticamente el número real de línea al importar.
+  newRow[S_IDX.ITMLISNUM] = '0';
   newRow[S_IDX.ITMREF] = payload.reference;
   newRow[S_IDX.LOT] = payload.lot ?? '';
   newRow[S_IDX.SLO] = payload.sublot ?? '';
