@@ -1,6 +1,10 @@
 import { parseSageSession, normalizeNullable } from './sageParser.js';
 import { classifyScan, hasAnyEndMarker } from './scannerParser.js';
-import { applyReadingToWorkingTable, calculateStats } from './inventoryEngine.js';
+import {
+  applyReadingToWorkingTable,
+  calculateStats,
+  removeReadingFromWorkingTable,
+} from './inventoryEngine.js';
 import { downloadWorkingCsv } from './exporter.js';
 import { getSession, listSessions, saveSession } from './storage.js';
 import { detectDelimiter, parseCsv } from './csv.js';
@@ -33,6 +37,7 @@ const els = {
   btnQtyCancel: document.getElementById('btnQtyCancel'),
   btnProcessScan: document.getElementById('btnProcessScan'),
   btnOpenManual: document.getElementById('btnOpenManual'),
+  btnOpenDelete: document.getElementById('btnOpenDelete'),
   manualDialog: document.getElementById('manualDialog'),
   manualForm: document.getElementById('manualForm'),
   btnManualCancel: document.getElementById('btnManualCancel'),
@@ -40,6 +45,12 @@ const els = {
   manualLot: document.getElementById('manualLot'),
   manualSublot: document.getElementById('manualSublot'),
   manualQty: document.getElementById('manualQty'),
+  deleteDialog: document.getElementById('deleteDialog'),
+  deleteForm: document.getElementById('deleteForm'),
+  btnDeleteCancel: document.getElementById('btnDeleteCancel'),
+  deleteRef: document.getElementById('deleteRef'),
+  deleteLot: document.getElementById('deleteLot'),
+  deleteSublot: document.getElementById('deleteSublot'),
   btnToggleLog: document.getElementById('btnToggleLog'),
   logContainer: document.getElementById('logContainer'),
   logTableBody: document.getElementById('logTableBody'),
@@ -230,7 +241,7 @@ async function processItem({ reference, lot, sublot, quantity, tipoLectura, rawC
 
   const payload = {
     location: currentSession.sourceMeta.requiresLocation ? currentSession.activeLocation : null,
-    reference,
+    reference: normalizeNullable(reference)?.toUpperCase() ?? null,
     lot: normalizeNullable(lot),
     sublot: normalizeNullable(sublot),
   };
@@ -261,6 +272,43 @@ async function processItem({ reference, lot, sublot, quantity, tipoLectura, rawC
 
   await persistAndRefresh();
   showToast(`Lectura procesada (${result.action}).`);
+}
+
+async function processDeleteItem({ reference, lot, sublot }) {
+  requireSessionLoaded();
+  validateActiveLocation();
+
+  const payload = {
+    location: currentSession.sourceMeta.requiresLocation ? currentSession.activeLocation : null,
+    reference: normalizeNullable(reference)?.toUpperCase() ?? null,
+    lot: normalizeNullable(lot),
+    sublot: normalizeNullable(sublot),
+  };
+
+  if (!payload.reference) throw new Error('La referencia es obligatoria para eliminar.');
+  if (payload.sublot && !payload.lot) throw new Error('No se permite sublote sin lote.');
+
+  const result = removeReadingFromWorkingTable({
+    workingRows: currentSession.workingRows,
+    requiresLocation: currentSession.sourceMeta.requiresLocation,
+    payload,
+  });
+
+  currentSession.logRows.push({
+    timestamp: new Date().toISOString(),
+    sessionId: currentSession.id,
+    tipoLectura: 'DEL',
+    ubicacion: payload.location,
+    referencia: payload.reference,
+    lote: payload.lot,
+    sublote: payload.sublot,
+    cantidad: 0,
+    rawCode: null,
+    resultado: result.action,
+  });
+
+  await persistAndRefresh();
+  showToast('Línea eliminada correctamente.');
 }
 
 els.tabs.forEach((btn) => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
@@ -460,6 +508,41 @@ els.manualForm.addEventListener('submit', async (ev) => {
   }
 });
 
+els.btnOpenDelete.addEventListener('click', () => {
+  try {
+    requireSessionLoaded();
+    els.deleteDialog.showModal();
+    els.deleteRef.focus();
+  } catch (err) {
+    showToast(err.message, true);
+  }
+});
+
+els.btnDeleteCancel.addEventListener('click', () => {
+  els.deleteDialog.close();
+  els.scanInput.focus();
+});
+
+els.deleteForm.addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  try {
+    await processDeleteItem({
+      reference: normalizeNullable(els.deleteRef.value),
+      lot: normalizeNullable(els.deleteLot.value),
+      sublot: normalizeNullable(els.deleteSublot.value),
+    });
+
+    els.deleteRef.value = '';
+    els.deleteLot.value = '';
+    els.deleteSublot.value = '';
+
+    els.deleteDialog.close();
+    els.scanInput.focus();
+  } catch (err) {
+    showToast(err.message, true);
+  }
+});
+
 els.btnExportCsv.addEventListener('click', () => {
   try {
     requireSessionLoaded();
@@ -473,7 +556,7 @@ els.btnExportCsv.addEventListener('click', () => {
 
 // Mantiene foco operativo para lector USB que actúa como teclado.
 setInterval(() => {
-  if (!els.manualDialog.open && !els.qtyDialog.open && document.activeElement !== els.scanInput) {
+  if (!els.manualDialog.open && !els.qtyDialog.open && !els.deleteDialog.open && document.activeElement !== els.scanInput) {
     els.scanInput.focus({ preventScroll: true });
   }
 }, 900);
