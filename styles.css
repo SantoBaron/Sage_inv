@@ -116,6 +116,14 @@ button {
   background: #334155;
 }
 
+.btn-danger {
+  background: #b91c1c;
+}
+
+.btn-danger:hover {
+  background: #991b1b;
+}
+
 .status-grid {
   display: grid;
   gap: 0.5rem;
