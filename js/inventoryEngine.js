@@ -6,7 +6,7 @@ import { getLastSRowInfo, normalizeNullable, S_IDX } from './sageParser.js';
 function buildMatchKey({ requiresLocation, location, reference, lot, sublot }) {
   const parts = [];
   if (requiresLocation) parts.push(normalizeNullable(location) ?? '__NULL__');
-  parts.push(normalizeNullable(reference) ?? '__NULL__');
+  parts.push((normalizeNullable(reference)?.toUpperCase()) ?? '__NULL__');
   parts.push(normalizeNullable(lot) ?? '__NULL__');
   parts.push(normalizeNullable(sublot) ?? '__NULL__');
   return parts.join('|');
@@ -81,6 +81,23 @@ export function applyReadingToWorkingTable({
     lineNumber: newRow[S_IDX.ITMLISNUM],
     newLinesCount: currentSCount - originalSCount,
   };
+}
+
+/**
+ * Elimina una línea S exacta de la tabla de trabajo.
+ */
+export function removeReadingFromWorkingTable({
+  workingRows,
+  requiresLocation,
+  payload,
+}) {
+  const match = findMatchingSRow(workingRows, payload, requiresLocation);
+  if (!match) {
+    throw new Error('No existe una línea S que coincida con los datos indicados.');
+  }
+
+  workingRows.splice(match.index, 1);
+  return { action: 'deleted', rowIndex: match.index, lineNumber: match.row[S_IDX.ITMLISNUM] };
 }
 
 /**
