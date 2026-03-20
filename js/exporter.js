@@ -15,3 +15,86 @@ export function downloadWorkingCsv(filename, rows, delimiter) {
   a.remove();
   URL.revokeObjectURL(url);
 }
+
+function escapeXml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&apos;');
+}
+
+function buildCell(value, type = 'String') {
+  return `<Cell><Data ss:Type="${type}">${escapeXml(value)}</Data></Cell>`;
+}
+
+/**
+ * Genera un fichero Excel 2003 XML con el log completo de la sesión.
+ * Es compatible con Excel sin depender de librerías externas.
+ */
+export function downloadSessionLogExcel(filename, session) {
+  const rows = session.logRows ?? [];
+  const header = [
+    'Fecha ISO',
+    'Fecha local',
+    'SessionId',
+    'Tipo',
+    'Ubicación',
+    'Referencia',
+    'Lote',
+    'Sublote',
+    'Cantidad',
+    'Raw',
+    'Resultado',
+  ];
+
+  const headerXml = `<Row>${header.map((cell) => buildCell(cell)).join('')}</Row>`;
+  const rowsXml = rows
+    .map((row) => {
+      const localDate = row.timestamp ? new Date(row.timestamp).toLocaleString() : '';
+      const quantity = Number(row.cantidad);
+      const quantityCell = Number.isFinite(quantity)
+        ? buildCell(String(quantity), 'Number')
+        : buildCell('');
+      return `<Row>
+        ${buildCell(row.timestamp ?? '')}
+        ${buildCell(localDate)}
+        ${buildCell(row.sessionId ?? session.id ?? '')}
+        ${buildCell(row.tipoLectura ?? '')}
+        ${buildCell(row.ubicacion ?? '')}
+        ${buildCell(row.referencia ?? '')}
+        ${buildCell(row.lote ?? '')}
+        ${buildCell(row.sublote ?? '')}
+        ${quantityCell}
+        ${buildCell(row.rawCode ?? '')}
+        ${buildCell(row.resultado ?? '')}
+      </Row>`;
+    })
+    .join('');
+
+  const xml = `<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="LOG_SESION">
+    <Table>
+      ${headerXml}
+      ${rowsXml}
+    </Table>
+  </Worksheet>
+</Workbook>`;
+
+  const blob = new Blob([xml], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}

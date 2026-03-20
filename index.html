@@ -70,6 +70,7 @@
           </small>
           <div class="row mt8">
             <button id="btnOpenManual" class="btn-secondary">Entrada manual (popup)</button>
+            <button id="btnOpenDelete" class="btn-danger" type="button">Eliminar línea</button>
           </div>
         </div>
 
@@ -103,7 +104,10 @@
         <h2>Exportación final</h2>
         <div class="card">
           <pre id="exportSummary">Sin sesión cargada.</pre>
-          <button id="btnExportCsv">Descargar CSV para Sage X3</button>
+          <div class="row">
+            <button id="btnExportCsv">Descargar CSV para Sage X3</button>
+            <button id="btnExportLogExcel" class="btn-secondary" type="button">Descargar Excel del log</button>
+          </div>
         </div>
       </section>
     </main>
@@ -133,6 +137,20 @@
         <menu>
           <button id="btnManualCancel" value="cancel" class="btn-secondary" type="button">Cancelar</button>
           <button id="btnProcessManual" value="default" type="submit">Guardar manual</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <dialog id="deleteDialog">
+      <form method="dialog" id="deleteForm" class="manual-form">
+        <h3>Eliminar línea</h3>
+        <p>Introduzca los datos de la línea S a eliminar (coincidencia exacta por ubicación/referencia/lote/sublote).</p>
+        <input id="deleteRef" type="text" placeholder="Referencia (obligatoria)" required />
+        <input id="deleteLot" type="text" placeholder="Lote (opcional)" />
+        <input id="deleteSublot" type="text" placeholder="Sublote (opcional)" />
+        <menu>
+          <button id="btnDeleteCancel" value="cancel" class="btn-secondary" type="button">Cancelar</button>
+          <button id="btnProcessDelete" value="default" class="btn-danger" type="submit">Eliminar línea</button>
         </menu>
       </form>
     </dialog>
