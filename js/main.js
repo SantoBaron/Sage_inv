@@ -5,7 +5,11 @@ import {
   calculateStats,
   removeReadingFromWorkingTable,
 } from './inventoryEngine.js';
-import { downloadSessionLogExcel, downloadWorkingCsv } from './exporter.js';
+import {
+  downloadCountedOnlyCsv,
+  downloadSessionLogExcel,
+  downloadWorkingCsv,
+} from './exporter.js';
 import { getSession, listSessions, saveSession } from './storage.js';
 import { detectDelimiter, parseCsv } from './csv.js';
 
@@ -57,6 +61,7 @@ const els = {
   logTableBody: document.getElementById('logTableBody'),
   exportSummary: document.getElementById('exportSummary'),
   btnExportCsv: document.getElementById('btnExportCsv'),
+  btnExportCountedCsv: document.getElementById('btnExportCountedCsv'),
   btnExportLogExcel: document.getElementById('btnExportLogExcel'),
   toast: document.getElementById('toast'),
 };
@@ -605,6 +610,17 @@ els.btnExportCsv.addEventListener('click', () => {
     const filename = `EXPORT_${currentSession.id}.csv`;
     downloadWorkingCsv(filename, currentSession.workingRows, currentSession.sourceMeta.delimiter);
     showToast(`CSV generado: ${filename}`);
+  } catch (err) {
+    showToast(err.message, true);
+  }
+});
+
+els.btnExportCountedCsv.addEventListener('click', () => {
+  try {
+    requireSessionLoaded();
+    const filename = `EXPORT_CONTADAS_${currentSession.id}.csv`;
+    downloadCountedOnlyCsv(filename, currentSession.workingRows, currentSession.sourceMeta.delimiter);
+    showToast(`CSV solo contadas generado: ${filename}`);
   } catch (err) {
     showToast(err.message, true);
   }

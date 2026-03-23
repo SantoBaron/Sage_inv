@@ -1,11 +1,7 @@
 import { toCsv } from './csv.js';
+import { S_IDX } from './sageParser.js';
 
-/**
- * Descarga el contenido CSV generado a partir de la tabla de trabajo.
- */
-export function downloadWorkingCsv(filename, rows, delimiter) {
-  const csv = toCsv(rows, delimiter);
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+function triggerDownload(filename, blob) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -14,6 +10,29 @@ export function downloadWorkingCsv(filename, rows, delimiter) {
   a.click();
   a.remove();
   URL.revokeObjectURL(url);
+}
+
+/**
+ * Descarga el contenido CSV generado a partir de la tabla de trabajo.
+ */
+export function downloadWorkingCsv(filename, rows, delimiter) {
+  const csv = toCsv(rows, delimiter);
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  triggerDownload(filename, blob);
+}
+
+/**
+ * Genera una exportación Sage omitiendo líneas S cuyo QTYPCUNEW sea 0.
+ */
+export function downloadCountedOnlyCsv(filename, rows, delimiter) {
+  const filteredRows = rows.filter((row) => {
+    if (row[0] !== 'S') return true;
+    return Number(row[S_IDX.QTYPCUNEW] ?? 0) !== 0;
+  });
+
+  const csv = toCsv(filteredRows, delimiter);
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  triggerDownload(filename, blob);
 }
 
 function escapeXml(value) {
@@ -89,12 +108,5 @@ export function downloadSessionLogExcel(filename, session) {
 </Workbook>`;
 
   const blob = new Blob([xml], { type: 'application/vnd.ms-excel;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
+  triggerDownload(filename, blob);
 }
