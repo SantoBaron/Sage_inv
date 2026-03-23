@@ -116,6 +116,19 @@ button {
   background: #334155;
 }
 
+.btn-danger {
+  background: #b91c1c;
+}
+
+.btn-danger:hover {
+  background: #991b1b;
+}
+
+.btn-inline-delete {
+  padding: 0.25rem 0.45rem;
+  font-size: 0.78rem;
+}
+
 .status-grid {
   display: grid;
   gap: 0.5rem;
