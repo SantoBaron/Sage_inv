@@ -619,8 +619,14 @@ els.btnExportCountedCsv.addEventListener('click', () => {
   try {
     requireSessionLoaded();
     const filename = `EXPORT_CONTADAS_${currentSession.id}.csv`;
-    downloadCountedOnlyCsv(filename, currentSession.workingRows, currentSession.sourceMeta.delimiter);
-    showToast(`CSV solo contadas generado: ${filename}`);
+    const stats = downloadCountedOnlyCsv(
+      filename,
+      currentSession.workingRows,
+      currentSession.sourceMeta.delimiter
+    );
+    showToast(
+      `CSV solo contadas generado: ${filename} | líneas exportadas: ${stats.exportedSLines} | líneas a 0 omitidas: ${stats.omittedZeroLines}`
+    );
   } catch (err) {
     showToast(err.message, true);
   }

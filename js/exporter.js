@@ -25,14 +25,22 @@ export function downloadWorkingCsv(filename, rows, delimiter) {
  * Genera una exportación Sage omitiendo líneas S cuyo QTYPCUNEW sea 0.
  */
 export function downloadCountedOnlyCsv(filename, rows, delimiter) {
+  let omittedZeroLines = 0;
+  let exportedSLines = 0;
   const filteredRows = rows.filter((row) => {
     if (row[0] !== 'S') return true;
-    return Number(row[S_IDX.QTYPCUNEW] ?? 0) !== 0;
+    if (Number(row[S_IDX.QTYPCUNEW] ?? 0) === 0) {
+      omittedZeroLines += 1;
+      return false;
+    }
+    exportedSLines += 1;
+    return true;
   });
 
   const csv = toCsv(filteredRows, delimiter);
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   triggerDownload(filename, blob);
+  return { omittedZeroLines, exportedSLines };
 }
 
 function escapeXml(value) {
