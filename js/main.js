@@ -1,7 +1,15 @@
 import { parseSageSession, normalizeNullable } from './sageParser.js';
 import { classifyScan, hasAnyEndMarker } from './scannerParser.js';
-import { applyReadingToWorkingTable, calculateStats } from './inventoryEngine.js';
-import { downloadWorkingCsv } from './exporter.js';
+import {
+  applyReadingToWorkingTable,
+  calculateStats,
+  removeReadingFromWorkingTable,
+} from './inventoryEngine.js';
+import {
+  downloadCountedOnlyCsv,
+  downloadSessionLogExcel,
+  downloadWorkingCsv,
+} from './exporter.js';
 import { getSession, listSessions, saveSession } from './storage.js';
 import { detectDelimiter, parseCsv } from './csv.js';
 
@@ -33,6 +41,7 @@ const els = {
   btnQtyCancel: document.getElementById('btnQtyCancel'),
   btnProcessScan: document.getElementById('btnProcessScan'),
   btnOpenManual: document.getElementById('btnOpenManual'),
+  btnOpenDelete: document.getElementById('btnOpenDelete'),
   manualDialog: document.getElementById('manualDialog'),
   manualForm: document.getElementById('manualForm'),
   btnManualCancel: document.getElementById('btnManualCancel'),
@@ -40,11 +49,20 @@ const els = {
   manualLot: document.getElementById('manualLot'),
   manualSublot: document.getElementById('manualSublot'),
   manualQty: document.getElementById('manualQty'),
+  deleteDialog: document.getElementById('deleteDialog'),
+  deleteForm: document.getElementById('deleteForm'),
+  btnDeleteCancel: document.getElementById('btnDeleteCancel'),
+  deleteRef: document.getElementById('deleteRef'),
+  deleteLot: document.getElementById('deleteLot'),
+  deleteSublot: document.getElementById('deleteSublot'),
+  logViewLimit: document.getElementById('logViewLimit'),
   btnToggleLog: document.getElementById('btnToggleLog'),
   logContainer: document.getElementById('logContainer'),
   logTableBody: document.getElementById('logTableBody'),
   exportSummary: document.getElementById('exportSummary'),
   btnExportCsv: document.getElementById('btnExportCsv'),
+  btnExportCountedCsv: document.getElementById('btnExportCountedCsv'),
+  btnExportLogExcel: document.getElementById('btnExportLogExcel'),
   toast: document.getElementById('toast'),
 };
 
@@ -78,6 +96,55 @@ function updateScanQtyButton() {
 function updateLogVisibilityUI() {
   els.logContainer.classList.toggle('hidden', !isLogVisible);
   els.btnToggleLog.textContent = isLogVisible ? 'Ocultar log' : 'Mostrar log';
+}
+
+function getVisibleLogEntries() {
+  if (!currentSession) return [];
+  const limit = els.logViewLimit.value;
+  const entries = currentSession.logRows.map((entry, index) => ({ entry, index }));
+  if (limit === 'all') return entries.slice().reverse();
+
+  const max = Number(limit);
+  if (!Number.isFinite(max) || max <= 0) return entries.slice().reverse();
+  return entries.slice(-max).reverse();
+}
+
+function openDeleteDialogWithEntry(logEntry) {
+  els.deleteRef.value = logEntry.referencia ?? '';
+  els.deleteLot.value = logEntry.lote ?? '';
+  els.deleteSublot.value = logEntry.sublote ?? '';
+  els.deleteDialog.showModal();
+  els.deleteRef.focus();
+}
+
+function renderLogTable() {
+  if (!currentSession) {
+    els.logTableBody.innerHTML = '';
+    return;
+  }
+
+  const visibleEntries = getVisibleLogEntries();
+  els.logTableBody.innerHTML = visibleEntries
+    .map(({ entry, index }) => {
+      const canDelete = Boolean(entry.referencia) && entry.resultado !== 'deleted';
+      const actionButton = canDelete
+        ? `<button class="btn-danger btn-inline-delete" type="button" data-log-index="${index}">Recuperar</button>`
+        : '';
+
+      return `<tr>
+        <td>${new Date(entry.timestamp).toLocaleString()}</td>
+        <td>${entry.tipoLectura}</td>
+        <td>${entry.ubicacion ?? ''}</td>
+        <td>${entry.referencia ?? ''}</td>
+        <td>${entry.lote ?? ''}</td>
+        <td>${entry.sublote ?? ''}</td>
+        <td>${entry.cantidad}</td>
+        <td>${entry.rawCode ?? ''}</td>
+        <td>${entry.resultado}</td>
+        <td>${actionButton}</td>
+      </tr>`;
+    })
+    .join('');
 }
 
 function readFileText(file) {
@@ -152,23 +219,7 @@ function updateSummaryUI() {
   els.statusSession.textContent = currentSession.id;
   els.statusLocationRequired.textContent = currentSession.sourceMeta.requiresLocation ? 'Sí' : 'No';
   els.statusActiveLocation.textContent = currentSession.activeLocation || '(sin ubicación activa)';
-
-  const last = currentSession.logRows.slice(-20).reverse();
-  els.logTableBody.innerHTML = last
-    .map(
-      (l) => `<tr>
-        <td>${new Date(l.timestamp).toLocaleString()}</td>
-        <td>${l.tipoLectura}</td>
-        <td>${l.ubicacion ?? ''}</td>
-        <td>${l.referencia ?? ''}</td>
-        <td>${l.lote ?? ''}</td>
-        <td>${l.sublote ?? ''}</td>
-        <td>${l.cantidad}</td>
-        <td>${l.rawCode ?? ''}</td>
-        <td>${l.resultado}</td>
-      </tr>`
-    )
-    .join('');
+  renderLogTable();
 }
 
 function requireSessionLoaded() {
@@ -230,7 +281,7 @@ async function processItem({ reference, lot, sublot, quantity, tipoLectura, rawC
 
   const payload = {
     location: currentSession.sourceMeta.requiresLocation ? currentSession.activeLocation : null,
-    reference,
+    reference: normalizeNullable(reference)?.toUpperCase() ?? null,
     lot: normalizeNullable(lot),
     sublot: normalizeNullable(sublot),
   };
@@ -263,6 +314,43 @@ async function processItem({ reference, lot, sublot, quantity, tipoLectura, rawC
   showToast(`Lectura procesada (${result.action}).`);
 }
 
+async function processDeleteItem({ reference, lot, sublot }) {
+  requireSessionLoaded();
+  validateActiveLocation();
+
+  const payload = {
+    location: currentSession.sourceMeta.requiresLocation ? currentSession.activeLocation : null,
+    reference: normalizeNullable(reference)?.toUpperCase() ?? null,
+    lot: normalizeNullable(lot),
+    sublot: normalizeNullable(sublot),
+  };
+
+  if (!payload.reference) throw new Error('La referencia es obligatoria para eliminar.');
+  if (payload.sublot && !payload.lot) throw new Error('No se permite sublote sin lote.');
+
+  const result = removeReadingFromWorkingTable({
+    workingRows: currentSession.workingRows,
+    requiresLocation: currentSession.sourceMeta.requiresLocation,
+    payload,
+  });
+
+  currentSession.logRows.push({
+    timestamp: new Date().toISOString(),
+    sessionId: currentSession.id,
+    tipoLectura: 'DEL',
+    ubicacion: payload.location,
+    referencia: payload.reference,
+    lote: payload.lot,
+    sublote: payload.sublot,
+    cantidad: 0,
+    rawCode: null,
+    resultado: result.action,
+  });
+
+  await persistAndRefresh();
+  showToast('Línea eliminada correctamente.');
+}
+
 els.tabs.forEach((btn) => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
 
 els.btnScanQty.addEventListener('click', () => {
@@ -279,6 +367,10 @@ els.btnQtyCancel.addEventListener('click', () => {
 els.btnToggleLog.addEventListener('click', () => {
   isLogVisible = !isLogVisible;
   updateLogVisibilityUI();
+});
+
+els.logViewLimit.addEventListener('change', () => {
+  renderLogTable();
 });
 
 els.qtyForm.addEventListener('submit', (ev) => {
@@ -460,6 +552,58 @@ els.manualForm.addEventListener('submit', async (ev) => {
   }
 });
 
+els.btnOpenDelete.addEventListener('click', () => {
+  try {
+    requireSessionLoaded();
+    els.deleteDialog.showModal();
+    els.deleteRef.focus();
+  } catch (err) {
+    showToast(err.message, true);
+  }
+});
+
+els.btnDeleteCancel.addEventListener('click', () => {
+  els.deleteDialog.close();
+  els.scanInput.focus();
+});
+
+els.deleteForm.addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  try {
+    await processDeleteItem({
+      reference: normalizeNullable(els.deleteRef.value),
+      lot: normalizeNullable(els.deleteLot.value),
+      sublot: normalizeNullable(els.deleteSublot.value),
+    });
+
+    els.deleteRef.value = '';
+    els.deleteLot.value = '';
+    els.deleteSublot.value = '';
+
+    els.deleteDialog.close();
+    els.scanInput.focus();
+  } catch (err) {
+    showToast(err.message, true);
+  }
+});
+
+els.logTableBody.addEventListener('click', (ev) => {
+  const btn = ev.target.closest('[data-log-index]');
+  if (!btn) return;
+
+  try {
+    requireSessionLoaded();
+    const logIndex = Number(btn.dataset.logIndex);
+    const logEntry = currentSession.logRows[logIndex];
+    if (!logEntry || !logEntry.referencia) {
+      throw new Error('No se pudo recuperar la línea desde el log.');
+    }
+    openDeleteDialogWithEntry(logEntry);
+  } catch (err) {
+    showToast(err.message, true);
+  }
+});
+
 els.btnExportCsv.addEventListener('click', () => {
   try {
     requireSessionLoaded();
@@ -471,9 +615,37 @@ els.btnExportCsv.addEventListener('click', () => {
   }
 });
 
+els.btnExportCountedCsv.addEventListener('click', () => {
+  try {
+    requireSessionLoaded();
+    const filename = `EXPORT_CONTADAS_${currentSession.id}.csv`;
+    const stats = downloadCountedOnlyCsv(
+      filename,
+      currentSession.workingRows,
+      currentSession.sourceMeta.delimiter
+    );
+    showToast(
+      `CSV solo contadas generado: ${filename} | líneas exportadas: ${stats.exportedSLines} | líneas a 0 omitidas: ${stats.omittedZeroLines}`
+    );
+  } catch (err) {
+    showToast(err.message, true);
+  }
+});
+
+els.btnExportLogExcel.addEventListener('click', () => {
+  try {
+    requireSessionLoaded();
+    const filename = `LOG_${currentSession.id}.xls`;
+    downloadSessionLogExcel(filename, currentSession);
+    showToast(`Excel del log generado: ${filename}`);
+  } catch (err) {
+    showToast(err.message, true);
+  }
+});
+
 // Mantiene foco operativo para lector USB que actúa como teclado.
 setInterval(() => {
-  if (!els.manualDialog.open && !els.qtyDialog.open && document.activeElement !== els.scanInput) {
+  if (!els.manualDialog.open && !els.qtyDialog.open && !els.deleteDialog.open && document.activeElement !== els.scanInput) {
     els.scanInput.focus({ preventScroll: true });
   }
 }, 900);

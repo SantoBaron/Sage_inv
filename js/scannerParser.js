@@ -139,27 +139,11 @@ export function classifyScan(rawCode) {
     };
   }
 
-  const normalized = normalizeTokenPrefix(raw);
-  // Fallback operativo: lectura sin tokens se interpreta como referencia directa de artículo.
-  if (!normalized.includes('Ê02') && raw.length > 0) {
-    return {
-      kind: 'article',
-      rawCode: raw,
-      reference: raw,
-      lot: null,
-      sublot: null,
-      hasEndMarker: false,
-      isValid: true,
-      errors: [],
-      warnings: ['Lectura sin tokens de artículo: usada como referencia directa.'],
-    };
-  }
-
   return {
     kind: 'invalid',
     rawCode: raw,
     isValid: false,
-    errors: article.errors,
+    errors: article.errors.length > 0 ? article.errors : ['Lectura de artículo sin identificador 02 válida.'],
     warnings: article.warnings,
   };
 }
