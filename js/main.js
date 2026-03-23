@@ -51,6 +51,7 @@ const els = {
   deleteRef: document.getElementById('deleteRef'),
   deleteLot: document.getElementById('deleteLot'),
   deleteSublot: document.getElementById('deleteSublot'),
+  logViewLimit: document.getElementById('logViewLimit'),
   btnToggleLog: document.getElementById('btnToggleLog'),
   logContainer: document.getElementById('logContainer'),
   logTableBody: document.getElementById('logTableBody'),
@@ -90,6 +91,55 @@ function updateScanQtyButton() {
 function updateLogVisibilityUI() {
   els.logContainer.classList.toggle('hidden', !isLogVisible);
   els.btnToggleLog.textContent = isLogVisible ? 'Ocultar log' : 'Mostrar log';
+}
+
+function getVisibleLogEntries() {
+  if (!currentSession) return [];
+  const limit = els.logViewLimit.value;
+  const entries = currentSession.logRows.map((entry, index) => ({ entry, index }));
+  if (limit === 'all') return entries.slice().reverse();
+
+  const max = Number(limit);
+  if (!Number.isFinite(max) || max <= 0) return entries.slice().reverse();
+  return entries.slice(-max).reverse();
+}
+
+function openDeleteDialogWithEntry(logEntry) {
+  els.deleteRef.value = logEntry.referencia ?? '';
+  els.deleteLot.value = logEntry.lote ?? '';
+  els.deleteSublot.value = logEntry.sublote ?? '';
+  els.deleteDialog.showModal();
+  els.deleteRef.focus();
+}
+
+function renderLogTable() {
+  if (!currentSession) {
+    els.logTableBody.innerHTML = '';
+    return;
+  }
+
+  const visibleEntries = getVisibleLogEntries();
+  els.logTableBody.innerHTML = visibleEntries
+    .map(({ entry, index }) => {
+      const canDelete = Boolean(entry.referencia) && entry.resultado !== 'deleted';
+      const actionButton = canDelete
+        ? `<button class="btn-danger btn-inline-delete" type="button" data-log-index="${index}">Recuperar</button>`
+        : '';
+
+      return `<tr>
+        <td>${new Date(entry.timestamp).toLocaleString()}</td>
+        <td>${entry.tipoLectura}</td>
+        <td>${entry.ubicacion ?? ''}</td>
+        <td>${entry.referencia ?? ''}</td>
+        <td>${entry.lote ?? ''}</td>
+        <td>${entry.sublote ?? ''}</td>
+        <td>${entry.cantidad}</td>
+        <td>${entry.rawCode ?? ''}</td>
+        <td>${entry.resultado}</td>
+        <td>${actionButton}</td>
+      </tr>`;
+    })
+    .join('');
 }
 
 function readFileText(file) {
@@ -164,23 +214,7 @@ function updateSummaryUI() {
   els.statusSession.textContent = currentSession.id;
   els.statusLocationRequired.textContent = currentSession.sourceMeta.requiresLocation ? 'Sí' : 'No';
   els.statusActiveLocation.textContent = currentSession.activeLocation || '(sin ubicación activa)';
-
-  const last = currentSession.logRows.slice(-20).reverse();
-  els.logTableBody.innerHTML = last
-    .map(
-      (l) => `<tr>
-        <td>${new Date(l.timestamp).toLocaleString()}</td>
-        <td>${l.tipoLectura}</td>
-        <td>${l.ubicacion ?? ''}</td>
-        <td>${l.referencia ?? ''}</td>
-        <td>${l.lote ?? ''}</td>
-        <td>${l.sublote ?? ''}</td>
-        <td>${l.cantidad}</td>
-        <td>${l.rawCode ?? ''}</td>
-        <td>${l.resultado}</td>
-      </tr>`
-    )
-    .join('');
+  renderLogTable();
 }
 
 function requireSessionLoaded() {
@@ -328,6 +362,10 @@ els.btnQtyCancel.addEventListener('click', () => {
 els.btnToggleLog.addEventListener('click', () => {
   isLogVisible = !isLogVisible;
   updateLogVisibilityUI();
+});
+
+els.logViewLimit.addEventListener('change', () => {
+  renderLogTable();
 });
 
 els.qtyForm.addEventListener('submit', (ev) => {
@@ -539,6 +577,23 @@ els.deleteForm.addEventListener('submit', async (ev) => {
 
     els.deleteDialog.close();
     els.scanInput.focus();
+  } catch (err) {
+    showToast(err.message, true);
+  }
+});
+
+els.logTableBody.addEventListener('click', (ev) => {
+  const btn = ev.target.closest('[data-log-index]');
+  if (!btn) return;
+
+  try {
+    requireSessionLoaded();
+    const logIndex = Number(btn.dataset.logIndex);
+    const logEntry = currentSession.logRows[logIndex];
+    if (!logEntry || !logEntry.referencia) {
+      throw new Error('No se pudo recuperar la línea desde el log.');
+    }
+    openDeleteDialogWithEntry(logEntry);
   } catch (err) {
     showToast(err.message, true);
   }

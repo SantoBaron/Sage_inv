@@ -77,6 +77,13 @@
         <div class="card">
           <div class="row">
             <h3>Últimas lecturas (log)</h3>
+            <label for="logViewLimit">Ver</label>
+            <select id="logViewLimit">
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+              <option value="all">Todas</option>
+            </select>
             <button id="btnToggleLog" class="btn-secondary" type="button">Mostrar log</button>
           </div>
           <div id="logContainer" class="hidden">
@@ -92,6 +99,7 @@
                 <th>Cantidad</th>
                 <th>Raw</th>
                 <th>Resultado</th>
+                <th>Acción</th>
               </tr>
             </thead>
             <tbody id="logTableBody"></tbody>
